@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>示例脚本 — 演示页面</title>
+  <style>
+		:root{--bg:#0f1724;--card:#0b1220;--accent:#10b981;--muted:#9aa4b2;--glass:rgba(255,255,255,0.03)}
+		*{box-sizing:border-box}
+		body{margin:0;font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, '微软雅黑', 'PingFang SC', "Helvetica Neue", Arial; background:linear-gradient(180deg,#071029 0%, #071822 100%);color:#e6eef6;-webkit-font-smoothing:antialiased}
+		.wrap{max-width:1100px;margin:36px auto;padding:24px}
+		header{display:flex;gap:16px;align-items:center}
+		.logo{width:64px;height:64px;border-radius:12px;background:linear-gradient(135deg,#0ea5a4,#7c3aed);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:18px;box-shadow:0 6px 18px rgba(12,22,36,0.6)}
+		h1{margin:0;font-size:22px}
+		p.lead{margin:6px 0 0;color:var(--muted)}.hero{display:flex;justify-content:space-between;align-items:center;margin-top:18px;background:var(--card);padding:18px;border-radius:12px;box-shadow:0 8px 30px rgba(2,6,23,0.6)}
+.hero .left{max-width:72%}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.badge{background:var(--glass);padding:6px 10px;border-radius:999px;color:var(--accent);font-weight:700}
+
+.actions{display:flex;gap:8px}
+.btn{background:linear-gradient(180deg,#0ea5a4,#059669);border:none;color:white;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:700}
+.btn.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:18px}
+.game{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);display:flex;align-items:center;gap:12px}
+.dot{width:12px;height:12px;border-radius:50%;background:var(--accent);flex:0 0 12px}
+.game .name{font-weight:700}
+.game .sub{font-size:12px;color:var(--muted);margin-top:4px}
+
+.section{margin-top:20px}
+.meta{display:flex;gap:12px;flex-wrap:wrap}
+.card{background:var(--card);padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03)}
+
+footer{margin-top:24px;color:var(--muted);font-size:13px;text-align:center}
+
+@media(max-width:600px){.hero{flex-direction:column;align-items:flex-start}.hero .left{max-width:100%}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+		<header>
+		  <div class="logo">示例</div>
+		  <div>
+				<h1>网页示例 — 宣传页面</h1>
+				<p class="lead">这是一个网页宣传页的演示脚本，用于展示布局与功能。</p>
+		  </div>
+		</header>
+		<div class="hero">
+		  <div class="left">
+				<div style="display:flex;justify-content:space-between;align-items:center">
+				  <div>
+						<div style="display:flex;gap:8px;align-items:center">
+						  <strong style="font-size:16px">支持内容（示例）</strong>
+						  <span style="color:var(--muted);font-size:13px">— 布局与功能演示</span>
+						</div>
+						<div class="badges" aria-hidden>
+						  <span class="badge">布局美观</span>
+						  <span class="badge">功能完整</span>
+						  <span class="badge">搜索过滤</span>
+						</div>
+				  </div>
+				</div>
+
+				<div class="section">
+				  <div class="card">
+						<strong>页面特点</strong>
+						<div class="meta" style="margin-top:8px">
+						  <div style="min-width:220px">自适应布局</div>
+						  <div style="min-width:220px">搜索过滤功能</div>
+						  <div style="min-width:220px">模块化设计</div>
+						</div>
+				  </div>
+				</div>
+		  </div>
+
+		  <div style="width:32%;min-width:220px">
+				<div class="card">
+				  <strong>提示</strong>
+				  <p style="margin:8px 0;color:var(--muted);font-size:14px">此页面仅为示例展示，不涉及真实购买或联系方式。</p>
+				</div>
+		  </div>
+		</div>
+
+		<section class="section">
+		  <div style="display:flex;justify-content:space-between;align-items:center">
+				<h2 style="margin:0;font-size:18px">示例列表</h2>
+				<input id="filter" placeholder="搜索内容（输入关键词）" style="padding:8px;border-radius:8px;border:none;background:rgba(255,255,255,0.02);color:#e6eef6;min-width:180px">
+		  </div>
+
+		  <div class="grid" id="gameGrid"></div>
+		</section>
+
+		<footer>
+		  本页面仅作学习与演示使用。<br>
+		</footer>
+  </div>
+
+  <script>
+		const items = [
+		  "示例一","示例二","示例三","示例四","示例五",
+		  "功能A","功能B","功能C","功能D","功能E",
+		  "案例展示1","案例展示2","案例展示3"
+		];
+
+		const grid = document.getElementById('gameGrid');
+		function render(list){
+		  grid.innerHTML = '';
+		  list.forEach(name =>{
+				const el = document.createElement('div'); el.className='game';
+				el.innerHTML = `<div class="dot"></div><div><div class="name">${name}</div><div class="sub">示例支持 · </div></div>`;
+				grid.appendChild(el);
+		  })
+		}
+		render(items);
+
+		// 搜索过滤
+		document.getElementById('filter').addEventListener('input', (e)=>{
+		  const v = e.target.value.trim().toLowerCase();
+		  if(!v) return render(items);
+		  render(items.filter(g => g.toLowerCase().includes(v)));
+		});
+  </script>
+</body>
+</html>
